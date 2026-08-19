@@ -4,10 +4,9 @@ using System.Text;
 
 namespace AssignmentOOP2
 {
-    internal class DelivaryCinter 
+    internal class DelivaryCinter
     {
         private string centerName;
-        
         private Shipment[] shipments;
 
         public DelivaryCinter()
@@ -15,17 +14,7 @@ namespace AssignmentOOP2
             shipments = new Shipment[20];
         }
 
-            public Shipment this[int position]
-        {
-            get
-            {
-                if (position >= 0 && position < 20)
-                    return shipments[position];
-
-                return null;//لو الشرط متحققش
-            }
-        }
-
+        public Driver Driver { get; set; }
 
         public string CenterName
         {
@@ -37,74 +26,95 @@ namespace AssignmentOOP2
             }
         }
 
-        public Shipment this[string code]
+
+
+        public Shipment this[int position]
         {
-            get {
-                if ( !string.IsNullOrEmpty(code))
-                {
-                    for (int i = 0; i < shipments.Length; i++)//x object of shipment
-                    {
-                        if(shipments[i] != null && shipments[i].TrackingCode == code)
-                        {
-                            return shipments[i];
-                        }
-                        
-                    }
-                  
-                }
+            get
+            {
+                if (position >= 0 && position < shipments.Length)
+                    return shipments[position];
+
                 return null;
-
-             }
-
+            }
         }
 
-        public bool RemoveShipment(string  trackingCode)
+        public Shipment this[string code]
         {
-
-            
-            
-                if (!string.IsNullOrEmpty(trackingCode))
+            get
+            {
+                if (!string.IsNullOrEmpty(code))
                 {
                     for (int i = 0; i < shipments.Length; i++)
                     {
-                        if (shipments[i] != null && shipments[i].TrackingCode == trackingCode)
+                        if (shipments[i] != null && shipments[i].TrackingCode == code)
                         {
-                            shipments[i] = null;
-                            return true;
+                            return shipments[i];
                         }
                     }
-      
                 }
+                return null;
+            }
+        }
+
+
+
+        public bool AddShipment(Shipment shipment)
+        {
+            if (shipment == null) return false;
+
+            if (this[shipment.TrackingCode] != null)
+            {
+                Console.WriteLine($"Shipment with tracking code '{shipment.TrackingCode}' already exists!");
                 return false;
-                
-            
+            }
+
+            for (int i = 0; i < shipments.Length; i++)
+            {
+                if (shipments[i] == null)
+                {
+                    shipments[i] = shipment;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool RemoveShipment(string trackingCode)
+        {
+            if (!string.IsNullOrEmpty(trackingCode))
+            {
+                for (int i = 0; i < shipments.Length; i++)
+                {
+                    if (shipments[i] != null && shipments[i].TrackingCode == trackingCode)
+                    {
+                        shipments[i] = null;
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         public void PrintAllShipments()
         {
+            Console.WriteLine($"=== Delivery Center: {CenterName ?? "Unnamed"} ===");
+
+    
+            if (Driver != null)
+            {
+                Console.WriteLine($"Assigned Driver: {Driver.FullName} (ID: {Driver.DriverId}, Phone: {Driver.PhoneNumber})");
+            }
+            Console.WriteLine("----------------------------------------------");
+
             for (int i = 0; i < shipments.Length; i++)
             {
                 if (shipments[i] != null)
                 {
                     shipments[i].printShipment();
-                    Console.WriteLine("------------------------------");
+                    Console.WriteLine("----------------------------------------------");
                 }
             }
-        }
-
-        public bool AddShipment(Shipment Shipment)
-        {
-            for (int i = 0; i < shipments.Length; i++)
-            {
-                if (shipments[i] == null)
-                {
-                    shipments[i] = Shipment;
-                    return true;
-                }
-               
-            }
-            return false;
-
         }
 
     }

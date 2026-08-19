@@ -7,25 +7,28 @@ namespace AssignmentOOP2
         static void Main(string[] args)
         {
             #region Theoretical Questions
-            //class ==>for big and complex logic 
-            //struct ==>for small and simple logic
+            // class ==> for big and complex logic 
+            // struct ==> for small and simple logic
             #endregion
 
             DelivaryCinter center = new DelivaryCinter();
 
+ 
+            Driver driver = new Driver(101, "Ahmed Ali", "01012345678");
+            center.Driver = driver;
+
             Console.Write("Enter delivery center name: ");
             center.CenterName = Console.ReadLine();
 
-            // Standard Shipment
-            Console.WriteLine("\n--- Standard Shipment ---");
            
+            Console.WriteLine("\n--- Standard Shipment ---");
             string track1;
             do
-            { 
+            {
                 Console.Write("Tracking code: ");
-               track1 = Console.ReadLine();
+                track1 = Console.ReadLine();
             }
-            while (track1 ==null);
+            while (string.IsNullOrEmpty(track1));
 
             Console.Write("Description: ");
             string desc1 = Console.ReadLine();
@@ -33,8 +36,8 @@ namespace AssignmentOOP2
             double weight1;
             do
             {
-                    Console.Write("Weight: ");
-             flag = double.TryParse(Console.ReadLine(),out  weight1);
+                Console.Write("Weight: ");
+                flag = double.TryParse(Console.ReadLine(), out weight1);
             }
             while (!flag);
 
@@ -43,7 +46,7 @@ namespace AssignmentOOP2
             DelivaryAddress addr1 = ReadAddress();
             StandardShipment standard = new StandardShipment(track1, desc1, weight1, fee1, addr1);
 
-            // Express Shipment
+           
             Console.WriteLine("\n--- Express Shipment ---");
             Console.Write("Tracking code: ");
             string track2 = Console.ReadLine();
@@ -58,7 +61,6 @@ namespace AssignmentOOP2
             DelivaryAddress addr2 = ReadAddress();
             ExpressShipment express = new ExpressShipment(track2, desc2, weight2, fee2, extraFee, addr2);
 
-            // International Shipment
             Console.WriteLine("\n--- International Shipment ---");
             Console.Write("Tracking code: ");
             string track3 = Console.ReadLine();
@@ -76,12 +78,28 @@ namespace AssignmentOOP2
             InternationalShipment international = new InternationalShipment(
                 track3, desc3, weight3, fee3, addr3, destCountry, customsFee);
 
+
             center.AddShipment(standard);
             center.AddShipment(express);
             center.AddShipment(international);
 
             Console.WriteLine("\n=== All Shipments ===");
             center.PrintAllShipments();
+
+
+            Console.WriteLine("\n=== Testing DeliveryHelper ===");
+            DeliveryHelper.PrintShipmentDetails(standard);
+
+
+            Console.WriteLine("=== Testing UpdateWeight (Overloading) ===");
+            standard.UpdateWeight(5.0);
+            standard.UpdateWeight(5.0, 1.5);
+            Console.WriteLine("\n=== Testing Sealed Features ===");
+            CompletedShipment completed = new CompletedShipment("CMP99", "Fragile Glassware", 2.0, 50m, addr1);
+            completed.printShipment();
+
+            PriorityInternationalShipment priority = new PriorityInternationalShipment("PRI100", "Medical Supplies", 10.0, 200m, addr3, "Germany", 150m);
+            priority.GenerateCustomsReport();
 
             Console.Write("\nEnter tracking code to search: ");
             string searchCode = Console.ReadLine();

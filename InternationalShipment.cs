@@ -4,45 +4,38 @@ using System.Text;
 
 namespace AssignmentOOP2
 {
-    internal class InternationalShipment :Shipment
+    internal class InternationalShipment : Shipment
     {
         private string destinationCountry;
-        private decimal customsfee;
+        private decimal customsFee;
 
-
-
-        //prop
-
-
-        public InternationalShipment(string trackingCode, string description, double weight, decimal delivaryFee, DelivaryAddress destination, string destinationCountry, decimal customsfee)
+        public InternationalShipment(string trackingCode, string description, double weight, decimal delivaryFee, DelivaryAddress destination, string destinationCountry, decimal customsFee)
             : base(trackingCode, description, weight, delivaryFee, destination)
         {
             DestinationCountry = destinationCountry;
-            CustomesFee = customsfee;
+            CustomsFee = customsFee;
         }
+
         public string DestinationCountry
         {
-            get 
-            { 
+            get
+            {
                 return destinationCountry;
             }
-            
-            set 
-            { 
-             if(!string.IsNullOrEmpty(value))
-                    destinationCountry= value;
-            } 
+            set
+            {
+                if (!string.IsNullOrEmpty(value))
+                    destinationCountry = value;
+            }
         }
 
-
-        public decimal CustomesFee
+        public decimal CustomsFee
         {
-            get { return customsfee; }
-
-            set {
-                if(value>=0)
-                customsfee = value;
-
+            get { return customsFee; }
+            set
+            {
+                if (value >= 0)
+                    customsFee = value;
             }
         }
 
@@ -50,9 +43,21 @@ namespace AssignmentOOP2
         {
             get
             {
-               return (double)(DelivaryFee) + (Weight * 5) + ((double)(CustomesFee));
+                return (double)DelivaryFee + (Weight * 5) + (double)CustomsFee;
             }
         }
 
+        public virtual void GenerateCustomsReport()
+        {
+            Console.WriteLine($"Customs report generated for {DestinationCountry}. Fee: {CustomsFee}");
+        }
+
+
+        public override void printShipment()
+        {
+            Console.WriteLine(" International Shipment ");
+            base.printShipment();
+            Console.WriteLine($"Destination Country: {DestinationCountry} \nCustoms Fee: {CustomsFee}");
+        }
     }
 }

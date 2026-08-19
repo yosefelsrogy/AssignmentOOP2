@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AssignmentOOP2
 {
@@ -14,32 +12,32 @@ namespace AssignmentOOP2
             ExtraFee = extraFee;
         }
 
-
-
-
-        public decimal ExtraFee {
-            get 
+        public decimal ExtraFee
+        {
+            get
             {
                 return extraFee;
             }
-            set 
+            set
             {
-                if (value >= 0) 
-                    extraFee= value;
+                if (value >= 0)
+                    extraFee = value;
             }
-            
         }
 
-       public override double EstimatedCost 
+        public override double EstimatedCost
         {
             get
             {
                 return (double)(DelivaryFee + ExtraFee) + (Weight * 5);
             }
         }
-        
-            
-        
 
+        public override void printShipment()
+        {
+            Console.WriteLine("=== Express Shipment ===");
+            base.printShipment();
+            Console.WriteLine($"Extra Fee: {ExtraFee}");
+        }
     }
 }
